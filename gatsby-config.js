@@ -6,6 +6,14 @@ module.exports = {
   siteMetadata: metaConfig,
 
   plugins: [
+		{
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: process.env.GATSBY_GA_ID,
+        head: false,
+        anonymize: true,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
