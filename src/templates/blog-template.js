@@ -14,7 +14,7 @@ function BlogTemplate({ data }) {
   const curPost = new Post(data.cur);
   const prevPost = data.prev && new Post(data.prev);
   const nextPost = data.next && new Post(data.next);
-  const { siteUrl, comments } = data.site?.siteMetadata;
+  const { siteUrl, comments, title: siteTitle } = data.site?.siteMetadata;
   const utterancesRepo = comments?.utterances?.repo;
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function BlogTemplate({ data }) {
 
   return (
     <Layout>
-      <Seo title={curPost?.title} description={curPost?.excerpt} />
+      <Seo title={`${curPost?.title} | ${siteTitle}`} description={curPost?.excerpt} />
       <PostHeader post={curPost} viewCount={viewCount} />
       <PostContent html={curPost.html} />
       <PostNavigator prevPost={prevPost} nextPost={nextPost} />
@@ -96,6 +96,7 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         siteUrl
+				title
         comments {
           utterances {
             repo

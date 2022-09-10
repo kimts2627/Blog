@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { navigate } from 'gatsby';
+import { graphql, navigate } from 'gatsby';
 
 import Layout from '../layout';
 import Seo from '../components/seo';
@@ -7,9 +7,10 @@ import Post from '../models/post';
 import CategoryPageHeader from '../components/category-page-header';
 import PostTabs from '../components/post-tabs';
 
-function CategoryTemplate({ pageContext }) {
+function CategoryTemplate({ pageContext, data }) {
   const { edges, currentCategory } = pageContext;
   const { categories } = pageContext;
+  const { title: siteTitle } = data.site.siteMetadata;
   const currentTabIndex = useMemo(
     () => categories.findIndex((category) => category === currentCategory),
     [categories, currentCategory],
@@ -26,7 +27,7 @@ function CategoryTemplate({ pageContext }) {
 
   return (
     <Layout>
-      <Seo title="Posts" />
+      <Seo title={`Posts | ${siteTitle}`} />
       <CategoryPageHeader title={categories[currentTabIndex]} subtitle={`${posts.length} posts`} />
       <PostTabs
         tabIndex={currentTabIndex}
@@ -39,3 +40,13 @@ function CategoryTemplate({ pageContext }) {
 }
 
 export default CategoryTemplate;
+
+export const pageQuery = graphql`
+  query {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+  }
+`
